@@ -1,6 +1,6 @@
 package controller;
 
-public interface Game extends Runnable{
+public interface Game {
 
     void run();
 
