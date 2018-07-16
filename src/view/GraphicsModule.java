@@ -1,6 +1,7 @@
 package view;
 
 import model.Board;
+import model.Direction;
 
 public interface GraphicsModule {
 
@@ -12,13 +13,8 @@ public interface GraphicsModule {
     void draw(Board board);
 
     /**
-     * Заключительные действия, на случай, если модулю нужно подчистить за собой.
-     */
-    void destroy();
-
-    /**
      *
      *
      */
-    void input();
+    Direction input();
 }

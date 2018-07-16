@@ -15,17 +15,15 @@ public class Board {
 
     public Board(int n, int m){
         configuration = new Integer[n][m];
-        reset();
+        initialBoard();
         emptyCellPosition = new Pair<>(n-1, m-1);
     }
 
     public void shuffle(){
-        //Collections.shuffle(configuration);
-
         int n = configuration.length;
         int m = configuration[0].length;
         List<Integer> data = new ArrayList<>();
-        for (int i = 1; i < n*m + 1; i++)
+        for (int i = 0; i < n*m; i++)
             data.add(i);
         Collections.shuffle(data);
         for(int i = 0; i < n; i++){
@@ -40,7 +38,7 @@ public class Board {
         }
     }
 
-    public void reset(){
+    public void initialBoard(){
         int n = configuration.length;
         int m = configuration[0].length;
         for(int i = 0; i < n; i++){
@@ -57,9 +55,11 @@ public class Board {
                 case UP:
                 case DOWN:
                     moveVertical(direction);
+                    break;
                 case LEFT:
                 case RIGHT:
                     moveHorizontal(direction);
+                    break;
             }
     }
 
@@ -70,11 +70,11 @@ public class Board {
      * -1 if DOWN
      */
     private void moveVertical(Direction direction){
-        int step = (direction == Direction.UP) ? 1 : -1;
-        int x1 = emptyCellPosition.getLeft();
-        int y1 = emptyCellPosition.getRight();
-        swap(x1, y1, x1, y1-step);
-        emptyCellPosition.setRight(y1-step);
+        int step = (direction == Direction.UP) ? -1 : 1;
+        int x = emptyCellPosition.getLeft();
+        int y = emptyCellPosition.getRight();
+        swap(x, y, x - step, y);
+        emptyCellPosition.setLeft(x-step);
     }
 
     /**
@@ -85,10 +85,10 @@ public class Board {
      */
     private void moveHorizontal(Direction direction){
         int step = (direction == Direction.RIGHT) ? 1 : -1;
-        int x1 = emptyCellPosition.getLeft();
-        int y1 = emptyCellPosition.getRight();
-        swap(x1, y1, x1 - step, y1);
-        emptyCellPosition.setLeft(x1 - step);
+        int x = emptyCellPosition.getLeft();
+        int y = emptyCellPosition.getRight();
+        swap(x, y, x, y - step);
+        emptyCellPosition.setRight(y - step);
     }
 
     private void swap(int x1, int y1, int x2, int y2){
@@ -100,13 +100,13 @@ public class Board {
     private boolean isPossibleMove(Direction direction) {
         switch (direction) {
             case RIGHT:
-                return emptyCellPosition.getLeft() != 0;
-            case LEFT:
-                return emptyCellPosition.getLeft() != configuration.length - 1;
-            case DOWN:
                 return emptyCellPosition.getRight() != 0;
+            case LEFT:
+                return emptyCellPosition.getRight() != configuration.length - 1;
+            case DOWN:
+                return emptyCellPosition.getLeft() != 0;
             case UP:
-                return emptyCellPosition.getRight() != configuration[0].length - 1;
+                return emptyCellPosition.getLeft() != configuration[0].length - 1;
         }
         return false;
     }
