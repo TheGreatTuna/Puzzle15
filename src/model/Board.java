@@ -15,8 +15,8 @@ public class Board {
 
     public Board(int n, int m){
         configuration = new Integer[n][m];
-        initialBoard();
         emptyCellPosition = new Pair<>(n-1, m-1);
+        initialBoard();
     }
 
     public void shuffle(){
@@ -47,6 +47,8 @@ public class Board {
             }
         }
         configuration[n-1][m-1] = 0;
+        emptyCellPosition.setLeft(n-1);
+        emptyCellPosition.setRight(m-1);
     }
 
     public void move(Direction direction){
@@ -111,4 +113,11 @@ public class Board {
         return false;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Board)) return false;
+        Board board1 = (Board) obj;
+        return emptyCellPosition.equals(board1.emptyCellPosition)
+                && Arrays.deepEquals(board1.configuration, configuration);
+    }
 }
